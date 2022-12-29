@@ -1,0 +1,34 @@
+#!/bin/bash
+set -Ceux
+
+ARGS=${@:2}
+
+case ${1} in
+"up") ## setup the database and start the server
+./runner db:migrate
+./runner db:seed
+deno task start
+;;
+"reset") ## reset the database and the server
+docker compose down -v
+./runner up
+;;
+"test") ## run tests
+echo "not implement"
+;;
+"db:migrate") ## migrate on the database
+docker compose up -d db
+sleep 3
+docker compose up migrate
+;;
+"db:seed") ## load seed data on the database
+docker compose run --rm -T db psql postgresql://postgres:password@db:5432/todo-development?sslmode=disable < db/seeds/*.sql
+;;
+"help" | *)
+(
+echo "HELP"
+echo "  COMMAND ) DESCRIPTION ) REQUIRE ) ARGS"
+\grep -E "\)\ *\##" ${0}
+) | column -t -s "\)"
+;;
+esac
