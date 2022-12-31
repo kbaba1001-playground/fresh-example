@@ -12,11 +12,18 @@ const pool = new Pool(
   true,
 );
 
-export default async function runQuery(query: string): Promise<any> {
+export default async function runQuery<Type>(
+  query: string,
+  args = {},
+) {
   const client = await pool.connect();
   let result;
   try {
-    result = await client.queryObject(query);
+    result = await client.queryObject<Type>({
+      camelcase: true,
+      text: query,
+      args: args,
+    });
   } finally {
     client.release();
   }
