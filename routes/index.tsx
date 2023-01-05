@@ -1,24 +1,33 @@
-import { Head } from "$fresh/runtime.ts";
-import Counter from "../islands/Counter.tsx";
+import { Handlers, PageProps } from "$fresh/server.ts";
+import { Todo } from "../db/models/todo.ts";
+import { IF } from "../deps.ts";
+import runQuery from "../db/index.ts";
 
-export default function Home() {
+export const handler: Handlers<Todo[]> = {
+  async GET(_req, ctx) {
+    const results = await runQuery<Todo>(
+      "select * from todos order by created_at desc",
+    );
+    return ctx.render(results.rows);
+  },
+};
+
+export default function Home({ data }: PageProps<Todo[]>) {
+  if (data.length == 0) {
+    return <h1>Todo not found</h1>;
+  }
+
   return (
-    <>
-      <Head>
-        <title>Fresh App</title>
-      </Head>
-      <div class="p-4 mx-auto max-w-screen-md">
-        <img
-          src="/logo.svg"
-          class="w-32 h-32"
-          alt="the fresh logo: a sliced lemon dripping with juice"
-        />
-        <p class="my-6">
-          Welcome to `fresh`. Try updating this message in the ./routes/index.tsx
-          file, and refresh.
-        </p>
-        <Counter start={3} />
-      </div>
-    </>
+    <div>
+      <h1 className="text-5xl">Todo List</h1>
+      <ul className="list-disc list-inside">
+        {data.map((todo, index) => (
+          <li key={index}>
+            <h2 className="text-3xl inline-block">{todo.title}</h2>
+            <div>{todo.description}</div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

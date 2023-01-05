@@ -1,3 +1,8 @@
+begin;
+
+truncate table todos;
+
+-- ----------
 insert into
   todos (title, description)
 values
@@ -6,3 +11,5 @@ values
     'to buy a new computer',
     'until the end of this year'
   );
+
+commit;

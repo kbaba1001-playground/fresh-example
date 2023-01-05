@@ -4,14 +4,17 @@ set -Ceux
 ARGS=${@:2}
 
 case ${1} in
-"up") ## setup the database and start the server
+"setup") ## setup the database and start the server
 ./runner db:migrate
 ./runner db:seed
-deno task start
+./runner up
 ;;
 "reset") ## reset the database and the server
 docker compose down -v
-./runner up
+./runner setup
+;;
+"up") ## start the server
+deno task start
 ;;
 "test") ## run tests
 echo "not implement"
