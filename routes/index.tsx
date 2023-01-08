@@ -29,6 +29,7 @@ export default function Home({ data }: PageProps<Todo[]>) {
                 <a href={`/todos/${todo.id}`}>{todo.title}</a>
               </h2>
               <div>{todo.description}</div>
+              <a href={`/todos/${todo.id}/edit`} class="underline">edit</a>
             </li>
           )}
           as="todo"
