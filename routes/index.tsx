@@ -1,6 +1,6 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { Todo } from "../db/models/todo.ts";
 import { ForEach } from "react-control-flow-components";
+import { Todo } from "../db/models/todo.ts";
 import runQuery from "../db/index.ts";
 
 export const handler: Handlers<Todo[]> = {
@@ -19,13 +19,15 @@ export default function Home({ data }: PageProps<Todo[]>) {
 
   return (
     <div>
-      <h1 className="text-5xl">Todo List</h1>
-      <ul className="list-disc list-inside">
+      <h1 class="text-5xl">Todo List</h1>
+      <ul class="list-disc list-inside">
         <ForEach
           items={data}
           component={(todo: Todo, index: number) => (
             <li key={index}>
-              <h2 className="text-3xl inline-block">{todo.title}</h2>
+              <h2 class="text-3xl inline-block underline">
+                <a href={`/todos/${todo.id}`}>{todo.title}</a>
+              </h2>
               <div>{todo.description}</div>
             </li>
           )}
