@@ -20,10 +20,12 @@ export const handler: Handlers<Todo> = {
 
 export default function TodosShowPage({ data }: PageProps<Todo>) {
   return (
-    <div>
+    <div class="w-1/3 mx-auto mt-20">
       <h1 class="text-5xl">{data.title}</h1>
       <div>{data.description}</div>
       <div class="mt-4">
+        <a href={`/todos/${data.id}/edit`} class="underline">edit</a>
+        <br />
         <a href="/" class="underline">Back to top</a>
       </div>
     </div>

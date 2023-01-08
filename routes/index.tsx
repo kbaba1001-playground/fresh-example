@@ -18,9 +18,10 @@ export default function Home({ data }: PageProps<Todo[]>) {
   }
 
   return (
-    <div>
+    <div class="w-1/3 mx-auto mt-20">
       <h1 class="text-5xl">Todo List</h1>
-      <ul class="list-disc list-inside">
+      <a href="/todos/new" class="underline">New</a>
+      <ul class="list-disc list-outside ml-5">
         <ForEach
           items={data}
           component={(todo: Todo, index: number) => (
